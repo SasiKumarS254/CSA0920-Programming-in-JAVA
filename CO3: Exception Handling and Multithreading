@@ -9,41 +9,29 @@ Concepts: race conditions, shared mutable state.
 
 CODE:
 class Counter {
-
     private int count = 0;
-
     public void increment() {
         count++;
     }
-
     public int getCount() {
         return count;
     }
 }
-
 class CounterThread extends Thread {
-
     private Counter counter;
     private int iterations;
-
     public CounterThread(Counter counter, int iterations) {
         this.counter = counter;
         this.iterations = iterations;
     }
-
-    @Override
     public void run() {
-
         for (int i = 0; i < iterations; i++) {
             counter.increment();
         }
     }
 }
-
-public class Main {
-
+public class RaceConditionDemo {
     public static void main(String[] args) {
-
         Counter counter = new Counter();
 
         int numberOfThreads = 4;
@@ -61,14 +49,11 @@ public class Main {
         t4.start();
 
         try {
-
             t1.join();
             t2.join();
             t3.join();
             t4.join();
-
         } catch (InterruptedException e) {
-
             System.out.println("Thread Interrupted.");
         }
 
@@ -78,15 +63,13 @@ public class Main {
         System.out.println("Actual Counter Value   : " + counter.getCount());
 
         if (counter.getCount() == expectedValue) {
-
             System.out.println("Counter reached the expected value.");
-
         } else {
-
             System.out.println("Race Condition Observed!");
             System.out.println("Some increments were lost due to concurrent access.");
         }
     }
+}
 
 OUTPUT:
 Number of Threads      : 4
