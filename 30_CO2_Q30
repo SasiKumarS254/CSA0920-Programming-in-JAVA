@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+class Box<T> {
+
+    private T value;
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}
+
+public class GenericBox {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        Box<Integer> integerBox = new Box<>();
+        Box<String> stringBox = new Box<>();
+        Box<Double> doubleBox = new Box<>();
+
+        System.out.print("Enter an Integer: ");
+        integerBox.setValue(sc.nextInt());
+
+        sc.nextLine();
+
+        System.out.print("Enter a String: ");
+        stringBox.setValue(sc.nextLine());
+
+        System.out.print("Enter a Double: ");
+        doubleBox.setValue(sc.nextDouble());
+
+        System.out.println("\nStored Values");
+        System.out.println("Integer : " + integerBox.getValue());
+        System.out.println("String  : " + stringBox.getValue());
+        System.out.println("Double  : " + doubleBox.getValue());
+
+        sc.close();
+
+        
+    }
+}
+
+Input
+100
+Java
+99.99
+Output
+Enter an Integer: 100
+Enter a String: Java
+Enter a Double: 99.99
+
+Stored Values
+Integer : 100
+String  : Java
+Double  : 99.99
+
+Test Case 2
+Input
+0
+Hello World
+0.0
+Output
+Enter an Integer: 0
+Enter a String: Hello World
+Enter a Double: 0.0
+
+Stored Values
+Integer : 0
+String  : Hello World
+Double  : 0.0
+
+
+
+Test Case 3
+Input
+-50
+Generics
+-45.75
+Output
+Enter an Integer: -50
+Enter a String: Generics
+Enter a Double: -45.75
+
+Stored Values
+Integer : -50
+String  : Generics
+Double  : -45.75
+
+
