@@ -1,0 +1,115 @@
+import java.util.Scanner;
+
+class Counter {
+
+    private int count = 0;
+
+    public void increment() {
+        count++;
+    }
+
+    public int getCount() {
+        return count;
+    }
+}
+
+class CounterThread extends Thread {
+
+    private Counter counter;
+    private int iterations;
+
+    public CounterThread(Counter counter, int iterations) {
+        this.counter = counter;
+        this.iterations = iterations;
+    }
+
+    public void run() {
+        for (int i = 0; i < iterations; i++) {
+            counter.increment();
+        }
+    }
+}
+
+public class RaceConditionDemo {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of threads: ");
+        int numberOfThreads = sc.nextInt();
+
+        System.out.print("Enter number of increments per thread: ");
+        int iterations = sc.nextInt();
+
+        if (numberOfThreads <= 0 || iterations <= 0) {
+            System.out.println("Enter positive values.");
+            sc.close();
+            return;
+        }
+
+        Counter counter = new Counter();
+
+        CounterThread[] threads = new CounterThread[numberOfThreads];
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            threads[i] = new CounterThread(counter, iterations);
+        }
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            threads[i].start();
+        }
+
+        try {
+            for (int i = 0; i < numberOfThreads; i++) {
+                threads[i].join();
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted.");
+        }
+
+        int expectedValue = numberOfThreads * iterations;
+        int actualValue = counter.getCount();
+
+        System.out.println();
+        System.out.println("Expected Counter Value : " + expectedValue);
+        System.out.println("Actual Counter Value   : " + actualValue);
+
+        if (actualValue < expectedValue) {
+            System.out.println("Race Condition Observed!");
+        } else {
+            System.out.println("Expected value reached.");
+        }
+
+        sc.close();
+    }
+}
+
+Input:
+Enter number of threads: 4
+Enter number of increments per thread: 100000
+Sample Output: 
+Expected Counter Value : 400000
+Actual Counter Value   : 108338
+Race Condition Observed! 
+
+Test Case 2 – Edge Case
+Input:
+Enter number of threads: 1
+Enter number of increments per thread: 100000
+Output:
+Expected Counter Value : 100000
+Actual Counter Value   : 100000
+Expected value reached.
+
+Test Case 3 – Boundary Case
+Input:
+Enter number of threads: 2
+Enter number of increments per thread: 100000
+Sample Output:
+Expected Counter Value : 200000
+Actual Counter Value   : 111668
+Race Condition Observed!
+
+
+
